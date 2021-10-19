@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+
+# instruction for use 
+# type video_length.py followed by the path to the root directory 
+# program will recursively look for all videos in the containing directories
+
+import subprocess 
+import glob 
+import sys 
+
+total_seconds = 0; 
+
+def get_length(filename): 
+    result = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", filename], 
+    stdout=subprocess.PIPE, 
+    stderr=subprocess.STDOUT)
+    return float(result.stdout)
+
+
+def time_convert(seconds): 
+    seconds = seconds % (24*3600)
+    hour = seconds // 3600
+    seconds%=3600
+    minutes=seconds//60
+    seconds%=60
+
+    return "%d:%02d:%02d" % ( hour, minutes, seconds )
+
+# most popular video file formats 
+
+for name in glob.glob(sys.argv[1] +  '/**/*.mkv', recursive=True): 
+    total_seconds +=  get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.mp4', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.mov', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.avi', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.flv', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.wmv', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.avchd', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.webm', recursive=True): 
+    total_seconds += get_length(name)
+
+for name in glob.glob(sys.argv[1] +  '/**/*.mpeg4', recursive=True): 
+    total_seconds += get_length(name)
+
+
+print("Total recursive video time : ", time_convert(total_seconds))
