@@ -8,7 +8,6 @@ Place this script where you want, and add that location to your PATH variable. A
 While using, specify the location of the root directory. 
 ```
 video_length . 
-
 ```
 or, 
 
